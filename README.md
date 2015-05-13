@@ -159,6 +159,7 @@ Properties :
 
 Alias Name :	"BATTERY"
 Properties :
+	
 			"Availability"
 			"Status"
 			"SystemName"
@@ -168,11 +169,10 @@ Properties :
 			"BatteryStatus"
 			"BatteryRechargeTime"
 
-	
-	
 
 Alias Name :	"PNP"
-Properties :	
+Properties :
+	
 			"Name"
 			"DeviceID"
 			"Service"
