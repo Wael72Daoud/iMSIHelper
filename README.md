@@ -1,4 +1,10 @@
-# iMSIHelper
+# iMSIHelper 
+
+# Alpha release candidate (build 1.0.106.1)
+
+
+
+
 various helpers for core Installation development.
 
 MSI Properties Extender:
@@ -14,7 +20,8 @@ MSI Properties Extender:
 Extender List (a subset):
 
 Alias Name : “CPU"
-Properties : 	
+Properties : 
+	
 			"Name"
 			"ProcessorId"
 			"SocketDesignation"
@@ -25,6 +32,7 @@ Properties :
 
 Alias Name :	"SCSICONTROLLER"
 Properties :
+
 			"Caption"
 			"Description"
 			"DeviceID"
@@ -56,7 +64,8 @@ Properties :
 			"Speed"
 
 Alias Name :	"BASEBOARD"
-Properties :	
+Properties :
+	
 			"Name"
 
 	
@@ -92,8 +101,6 @@ Properties :
 			"SMBIOSMajorVersion"
 			"SMBIOSMinorVersion"
 
-
-	
 	
 Alias Name :	"SOUNDDEV"
 Properties :	
@@ -128,6 +135,7 @@ Properties :
 
 Alias Name :	"VOLTAGE"
 Properties :
+
 			"Name"
 
 	
@@ -145,16 +153,12 @@ Properties :
 			"CurrentNumberOfColors"
 			"AdapterRAM" 
 			
-	
-
 
 Alias Name :	"MONITOR"
-Properties :	
+Properties :
+	
 			"InstanceName"
 			"Active"
-
-	
-	
 
 
 Alias Name :	"BATTERY"
@@ -177,6 +181,8 @@ Properties :
 			"DeviceID"
 			"Service"
 
-	
+
+
+			
 	
 
