@@ -1,6 +1,6 @@
 # iMSIHelper 
 
-# Alpha release candidate (build 1.0.106.1)
+# Beta release candidate (build 1.6.3.15)
 
 
 
@@ -13,13 +13,13 @@ MSI Properties Extender:
 - You can choose from any number of the Hardware types (Aliases below) and you can minimize the list of properties to enhance performance or to get what you really needs.
 - The list of Aliases and properties can grow to add new hardware types.
 - Ability to retrieve the full list of the hardware on the machine (if machine contains more the display drive, monitor, cpu, etc).
-- Example and Samples (See Docs)...
+- Example and Samples (See Docs at https://github.com/Wael72Daoud/iMSIHelper/blob/master/msiPropExt/Docs/MSIPropertiesExtender.docx).
 
 
 
 Extender List (a subset):
 
-Alias Name : “CPU"
+Alias Name : â€œCPU"
 Properties : 
 	
 			"Name"
