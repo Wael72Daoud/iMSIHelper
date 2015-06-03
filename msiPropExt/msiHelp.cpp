@@ -109,17 +109,20 @@ UINT msiHelp::setMSIProperty(__in ::WS PropertyName, __in ::WS PropertyValue)
 {
 	::logger logger(this->hinstall);
 	logger.log(Loglevel::DEBUG, L"info function : [%ls:%d]", __FUNCTIONW__, __LINE__);
-	LPCTSTR m_PropertyName = PropertyName.c_str();
-	LPCTSTR m_PropertyVal = PropertyValue.c_str();
+	//LPCTSTR m_PropertyName = PropertyName.c_str();
+	//LPCTSTR m_PropertyVal = PropertyValue.c_str();
 
-	if (ERROR_SUCCESS != ::MsiSetProperty(hinstall, m_PropertyName, m_PropertyVal))
+	//if (ERROR_SUCCESS != ::MsiSetProperty(hinstall, m_PropertyName, m_PropertyVal))
+	if (ERROR_SUCCESS != ::MsiSetProperty(hinstall, PropertyName.c_str(), PropertyValue.c_str()))
 	{
-		logger.log(Loglevel::ERR,L"failed to set property name (%ls) with (%ls) value : [%ls:%d]", m_PropertyName, m_PropertyVal, __FUNCTIONW__, __LINE__);
+		logger.log(Loglevel::ERR,L"failed to set property name (%ls) with (%ls) value : [%ls:%d]", PropertyName.c_str(), 
+			PropertyValue.c_str(), __FUNCTIONW__, __LINE__);
 		return ERROR_INSTALL_FAILURE;
 	}
 	else
 	{
-		logger.log(Loglevel::INFO,L"successfull setting new public property value %ls=%ls : [%ls:%d]", m_PropertyName, m_PropertyVal, __FUNCTIONW__, __LINE__);
+		logger.log(Loglevel::INFO, LR"(successfull setting new public property value %ls=%ls : [%ls:%d])", PropertyName.c_str(),
+			PropertyValue.c_str() , __FUNCTIONW__, __LINE__);
 	}
 
 	logger.log(Loglevel::DEBUG, L"Exit function : [%ls:%d]", __FUNCTIONW__, __LINE__);

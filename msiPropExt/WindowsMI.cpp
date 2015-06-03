@@ -235,6 +235,7 @@ UINT WindowsMI::getPropertyValues(__out  value_list& data)
 	CComVariant vtProp;
 	WS strDataValue;
 	utils _utils;
+	Err _err;
 
 
 		if (WMI_PropertyName == NULL)
@@ -270,43 +271,28 @@ UINT WindowsMI::getPropertyValues(__out  value_list& data)
 
 				hr = m_pclsObj->Get(WMI_PropertyName, 0, &vtProp, 0, 0);
 
+				WS strError = 	_err.ErrorToString(hr);
 				
-				switch (hr)
+				if (WBEM_S_NO_ERROR == hr)
 				{
-				case WBEM_E_FAILED:					
-					
-					data.push_back(_T(""));
-					logger.log(Loglevel::ERR,L"WBEM_E_FAILED : [%ls:%d]", __FUNCTIONW__, __LINE__);
-					
-					break;
-				case WBEM_E_INVALID_PARAMETER:
-					data.push_back(_T(""));
-					logger.log(Loglevel::ERR,L"WBEM_E_INVALID_PARAMETER : [%ls:%d]", __FUNCTIONW__, __LINE__);
-					
-					break;
-				case WBEM_S_NO_ERROR:
-					
 					_utils.VariantToString(vtProp, strDataValue);
 					data.push_back(strDataValue);
-					
-					logger.log(Loglevel::INFO,L"INFO, getting property values list : [%ls:%d]", __FUNCTIONW__, __LINE__);
 
-					break;
-				case WBEM_E_NOT_FOUND:
-					
-					data.push_back(_T(""));
-					break;
-				default:
-					
+					logger.log(Loglevel::INFO, L"getting property values list (%ls) : [%ls:%d]", strDataValue.c_str(), __FUNCTIONW__, __LINE__);
+														  
+				}
+				else 
+				{
 					logger.log(Loglevel::DEBUG, L"failed to execute query: \n HResult = (%lx) \n Error = (%ls)  \n Data = (%ls) \n Namespace = (%ls) \n PropertyName = (%ls), : [%ls:%d]",
 						hr, this->m_ErrHandle.c_str(), (TCHAR*) this->WMI_ClassQuery.m_str, this->Namespace,
 						this->WMI_PropertyName, __FUNCTIONW__, __LINE__);
-										
-					data.push_back(this->m_ErrHandle);
-					break;
+
+					data.push_back(strError);
+					
 				}
 
-
+	
+				
 			}
 
 		}

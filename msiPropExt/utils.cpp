@@ -1,4 +1,3 @@
-
 /*
 * Copyright (C) 2015  Wael Daoud (wael.daoud@hotmail.com)
 Microsoft Public License (Ms-PL)
@@ -33,66 +32,76 @@ A "contributor" is any person that distributes its contribution under this licen
 
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 */
+
 #include "stdafx.h"
-#include "logger.h"
+#include "utils.h"
 
-
-//-----------------------------------------
-//	logger::log(__in TCHAR*,...) - logging
-//-----------------------------------------
-void logger::log(__in Loglevel level, __in const TCHAR* message, ...)
+utils::utils()
 {
-	const Loglevel Debug = Loglevel::DEBUG;
-	const Loglevel Info = Loglevel::INFO;
-	const Loglevel Error = Loglevel::ERR;
+}
+
+//-----------------------------------------------------------------------------
+//	utils::VariantToString(__in CComVariant varianData, __out WS& stringVal)
+//			Convert VARIANT to std::wstring type
+//------------------------------------------------------------------------------
+UINT utils::VariantToString(__in CComVariant variantData, __out WS& stringVal)
+{
+	
+	if (V_VT(&variantData) == VT_BSTR)
+		stringVal = variantData.bstrVal;
+
+	if (V_VT(&variantData) == VT_INT)
+			stringVal = (PWSTR) _bstr_t(variantData.intVal);
+
+	if (V_VT(&variantData) == VT_NULL)
+		stringVal = L"";
+
+	if (V_VT(&variantData) == VT_I4)
+		stringVal = (PWSTR)_bstr_t(variantData.intVal);
+	
+	if (V_VT(&variantData) == VT_BOOL)
+		stringVal = variantData.boolVal ? _T("TRUE") : _T("FALSE");
+
+	if (V_VT(&variantData) == VT_EMPTY)
+		stringVal = L"";
+	
+	if (V_VT(&variantData) == VT_I2)
+		stringVal = (PWSTR)_bstr_t(variantData.iVal);
+
+	if (V_VT(&variantData) == VT_R4)
+		stringVal = (PWSTR)_bstr_t(variantData.fltVal);
+	
+	if (V_VT(&variantData) == VT_R8)
+		stringVal = (PWSTR)_bstr_t(variantData.dblVal);
+
+
+	if (V_VT(&variantData) == VT_CY)
+		stringVal = _bstr_t(variantData.pcyVal);
+
+	if (V_VT(&variantData) == VT_DATE)
+		stringVal = _bstr_t(variantData.date);
+
+	if (V_VT(&variantData) == VT_DISPATCH)
+		stringVal = _bstr_t(variantData.pdispVal);
+	
+	if (V_VT(&variantData) == VT_ERROR)
+		stringVal = _bstr_t(variantData.intVal);
 
 	
-	TCHAR szBuff[1024] = { NULL };
-	TCHAR szErrLevel[1024] = { _T("ERROR, ")};
-	TCHAR szInfoLevel[1024] = { _T("INFO, ") };
-	TCHAR szInfoDebug[1024] = { _T("DEBUG, ") };
-	va_list vaList;
-	
-	va_start(vaList, message);
-
-	
-	vswprintf_s(szBuff, message, vaList);						   
-	
-	switch (level)
-	{
-	case Info:
-		StringCbCat(szInfoLevel, _countof(szInfoLevel), szBuff);
-		::MsiRecordSetString(m_hInstall, 0, (LPCWSTR)szInfoLevel);
-		MsiProcessMessage(m_hInstall, INSTALLMESSAGE_INFO, m_hInstall);
-
-		break;
-	case Error:
-		StringCbCat(szErrLevel, _countof(szErrLevel), szBuff);
-		::MsiRecordSetString(m_hInstall, 0, (LPCWSTR)szErrLevel);
-		MsiProcessMessage(m_hInstall, INSTALLMESSAGE_ERROR, m_hInstall);
-		break;
-
-	case Debug:
-		StringCbCat(szInfoDebug, _countof(szInfoDebug), szBuff);
-		OutputDebugString((LPCWSTR)szInfoDebug);
-		break;
-
-	}
-	
-	
-	va_end(vaList);
-
-	//send messages to  the debugger
-	
-	
-
+	return S_OK;
 }
 
 
-
-logger::~logger()
+//-----------------------------------------------------------------------------
+//	void utils::ToUpper(__inout_opt WS strStr)
+//			Convert lowercase string to uppercase string
+//------------------------------------------------------------------------------
+void utils::ToUpper(__inout_opt WS& strStr)
 {
-	//MsiCloseHandle(m_hInstall);
-	m_hInstall = NULL;
+	std::transform(strStr.begin(), strStr.end(), strStr.begin(), ::towupper);
+	
+}
 
+utils::~utils()
+{
 }

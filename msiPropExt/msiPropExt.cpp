@@ -45,6 +45,7 @@ A "contributor" is any person that distributes its contribution under this licen
 #include <fstream>
 #include <iostream>
 #include "utils.h"
+#include <future>
 
 
 
@@ -116,7 +117,6 @@ UINT __stdcall MSIPropertiesExt(MSIHANDLE hInstall)
 	utils _utils;
 	
 	
-	
 	_WindowsMangment->setHandle(m_hres);
 
 	WMI_ALIASES_MAP MSIAliasVerbsCol;
@@ -177,7 +177,7 @@ UINT __stdcall MSIPropertiesExt(MSIHANDLE hInstall)
 				
 				if (revisedData->first == classNameQuery->getAlias())
 				{
-					logger.log(Loglevel::INFO,L"found a matching alias : [%ls:%d]", __FUNCTIONW__, __LINE__);
+					logger.log(Loglevel::INFO, L"found a matching alias (%ls) : [%ls:%d]", revisedData->first.c_str(), __FUNCTIONW__, __LINE__);
 
 					
 					std::wstring psNameSpace(classNameQuery->getNameSpace().c_str());
@@ -190,8 +190,6 @@ UINT __stdcall MSIPropertiesExt(MSIHANDLE hInstall)
 					for (value_list::iterator valProperty = revisedPropsList.begin(); valProperty != revisedPropsList.end(); valProperty++)
 					{
 						
-						logger.log(Loglevel::INFO,L"retrieving properties list : [%ls:%d]", __FUNCTIONW__, __LINE__);
-
 						value_list wmi_data;
 						_ASSERT(valProperty == NULL);
 						WS strPropertyName(*valProperty);
@@ -223,18 +221,19 @@ UINT __stdcall MSIPropertiesExt(MSIHANDLE hInstall)
 					
 						if (ERROR_SUCCESS != _WindowsMangment->getPropertyValues(wmi_data))
 						{
-							logger.log(Loglevel::ERR,L"ERROR, failed to return the query data : [%ls:%d]", __FUNCTIONW__, __LINE__);
+							logger.log(Loglevel::ERR,L"failed to return the query data : [%ls:%d]", __FUNCTIONW__, __LINE__);
 							return S_FALSE;
 						}
 
-
+						
 
 						WS PublicPropName;  						
 						WS PublicPropValue;
 						bool bDilimtedData = false;
 						int iDilimterCounter = 0;
-						for (value_list::iterator data = wmi_data.begin(); data != wmi_data.end(); ++data)
+						for (value_list::const_iterator data = wmi_data.begin(); data != wmi_data.end(); ++data)
 						{
+							WS prpertyValueStr(*data);
 							logger.log(Loglevel::INFO,L"retrieving properties value list : [%ls:%d]", __FUNCTIONW__, __LINE__);
 							//
 							PublicPropName = PROPERTY_NAME_HEADER;
@@ -246,34 +245,43 @@ UINT __stdcall MSIPropertiesExt(MSIHANDLE hInstall)
 							
 							logger.log(Loglevel::INFO,L"assigning public property name (%ls)  : [%ls:%d]", PublicPropName.c_str(), __FUNCTIONW__, __LINE__);
 							
-							if (wmi_data.size() > 1 && *data != L"")
+							if (wmi_data.size() > 1)
 							{
 								bDilimtedData = true;
 								iDilimterCounter++;
-								PublicPropValue.append(*data);
+								if (prpertyValueStr != L"")
+								{
 
-								if (iDilimterCounter < wmi_data.size())
-									PublicPropValue.append(L",");
+									logger.log(Loglevel::DEBUG, L"concatenation operations for new value (%ls) : [%ls:%d]", prpertyValueStr.c_str()
+										, __FUNCTIONW__, __LINE__);
+									PublicPropValue.append(prpertyValueStr);
+
+									if (iDilimterCounter < wmi_data.size())
+										PublicPropValue.append(L",");
+								}
+								
 
 							}
 							else
 							{
-								PublicPropValue = *data;
+								PublicPropValue = prpertyValueStr;
 								if (ERROR_SUCCESS != _msiHelper->setMSIProperty(PublicPropName, PublicPropValue))
 								{
-									logger.log(Loglevel::ERR,L"failed to set public property (%ls) name with (%ls) value : [%ls:%d]", PublicPropName.c_str(), PublicPropValue.c_str() , __FUNCTIONW__, __LINE__);
+									logger.log(Loglevel::ERR,LR"(failed to set public property (%ls) name with (%ls) value : [%ls:%d])", 
+										PublicPropName.c_str(), PublicPropValue.c_str() , __FUNCTIONW__, __LINE__);
 									return S_FALSE;
 								}
 								
 							}
 
-
+							
 						}
 						if (bDilimtedData)
 						{
 							if (ERROR_SUCCESS != _msiHelper->setMSIProperty(PublicPropName, PublicPropValue))
 							{
-								logger.log(Loglevel::ERR,L"failed to set public property (%ls) name with (%ls) value : [%ls:%d]", PublicPropName.c_str(), PublicPropValue.c_str(), __FUNCTIONW__, __LINE__);
+								logger.log(Loglevel::ERR,LR"(failed to set public property (%ls) name with (%ls) value : [%ls:%d])",
+									PublicPropName.c_str(), PublicPropValue.c_str(), __FUNCTIONW__, __LINE__);
 								return S_FALSE;
 							}
 						}
@@ -329,7 +337,7 @@ UINT __stdcall UnitTest(MSIHANDLE hInstall)
 	ClassInfo_list classesCol = _classTrans.getClassesList();
 	
 	
-		for (ClassInfo_list::iterator it = classesCol.begin(); it != classesCol.end(); ++it)
+		for (ClassInfo_list::iterator it = classesCol.begin(); it != classesCol.end(); it++)
 		{
 			
 								  
@@ -338,7 +346,7 @@ UINT __stdcall UnitTest(MSIHANDLE hInstall)
 			std::wofstream fOut;
 			
 			fOut.open(ut_fileName, std::ios_base::app);
-			for (value_list::const_iterator it2 = propertyList.begin(); it2 != propertyList.end(); ++it2)
+			for (value_list::const_iterator it2 = propertyList.begin(); it2 != propertyList.end(); it2++)
 			{
 				WS PROPERTY_NAME_HEADER = L"WMIEXT_";
 				PROPERTY_NAME_HEADER.append(it->getAlias());

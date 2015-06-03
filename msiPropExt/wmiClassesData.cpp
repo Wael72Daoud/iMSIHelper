@@ -151,7 +151,7 @@ void wmiClassesData::setWMI_Info()
 
 
 	_wmiClassInfo.setAlias(L"BOOTCONFIG");
-	_wmiClassInfo.setClass(L"WIN32_PROCESSOR");
+	_wmiClassInfo.setClass(L"Win32_BootConfiguration");
 	_wmiClassInfo.setNameSpace(L"ROOT\\CIMV2");
 	_wmiClassInfo.setPropList(
 	{
@@ -237,7 +237,8 @@ void wmiClassesData::setWMI_Info()
 	_wmiClassInfo.setNameSpace(L"ROOT\\CIMV2");
 	_wmiClassInfo.setPropList(
 	{
-	L"Name"
+	L"Name",
+	L"Status"
 
 	});
 	m_listOfWMIInfo.push_back(_wmiClassInfo);
@@ -286,7 +287,10 @@ void wmiClassesData::setWMI_Info()
 		L"SmartBatteryVersion",
 		L"Caption",
 		L"BatteryStatus",
-		L"BatteryRechargeTime"
+		L"EstimatedChargeRemaining",
+		L"EstimatedRunTime",
+		L"DesignVoltage"
+
 
 	});
 	m_listOfWMIInfo.push_back(_wmiClassInfo);
@@ -296,9 +300,10 @@ void wmiClassesData::setWMI_Info()
 	_wmiClassInfo.setNameSpace(L"ROOT\\CIMV2");
 	_wmiClassInfo.setPropList(
 	{
-		L"Name",
+		
 		L"DeviceID",
-		L"Service"
+		L"Service",
+		L"Name"
 
 	});
 	m_listOfWMIInfo.push_back(_wmiClassInfo);

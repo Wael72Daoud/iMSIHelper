@@ -1,3 +1,4 @@
+
 /*
 * Copyright (C) 2015  Wael Daoud (wael.daoud@hotmail.com)
 Microsoft Public License (Ms-PL)
@@ -32,77 +33,74 @@ A "contributor" is any person that distributes its contribution under this licen
 
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 */
-
 #include "stdafx.h"
-#include "utils.h"
+#include "logger.h"
 
-utils::utils()
+
+//-----------------------------------------
+//	logger::log(__in TCHAR*,...) - logging
+//-----------------------------------------
+void logger::log(__in Loglevel level, __in const TCHAR* message, ...)
 {
+	const Loglevel Debug = Loglevel::DEBUG;
+	const Loglevel Info = Loglevel::INFO;
+	const Loglevel Error = Loglevel::ERR;
+
+	
+	TCHAR* szBuff =  NULL;
+	
+
+	va_list vaList;
+	
+
+	va_start(vaList, message);
+
+	int ibuffsize = _vsctprintf(message,vaList);
+	if (ibuffsize != 0)
+	{
+		++ibuffsize;
+
+		szBuff = new TCHAR[ibuffsize];
+
+
+		vswprintf_s(szBuff, ibuffsize, message, vaList);
+
+		switch (level)
+		{
+		case Info:
+			
+			::MsiRecordSetString(m_hInstall, 0, szBuff);
+			MsiProcessMessage(m_hInstall, INSTALLMESSAGE_INFO, m_hInstall);
+
+			break;
+		case Error:
+			
+			::MsiRecordSetString(m_hInstall, 0, szBuff);
+			MsiProcessMessage(m_hInstall, INSTALLMESSAGE_ERROR, m_hInstall);
+			break;
+
+		case Debug:
+			
+			OutputDebugString(szBuff);
+			break;
+
+		}
+
+
+		va_end(vaList);
+
+		delete szBuff;
+		//send messages to  the debugger
+	}
+	
+
 }
 
-//-----------------------------------------------------------------------------
-//	utils::VariantToString(__in CComVariant varianData, __out WS& stringVal)
-//			Convert VARIANT to std::wstring type
-//------------------------------------------------------------------------------
-UINT utils::VariantToString(__in CComVariant variantData, __out WS& stringVal)
+
+
+logger::~logger()
 {
-	
+	//MsiCloseHandle(m_hInstall);
+	m_hInstall = NULL;
 
-	if (V_VT(&variantData) == VT_BSTR)
-		stringVal = variantData.bstrVal;
-
-	if (V_VT(&variantData) == VT_INT)
-			stringVal = (PWSTR) _bstr_t(variantData.intVal);
-
-	if (V_VT(&variantData) == VT_NULL)
-		stringVal = L"";
-
-	if (V_VT(&variantData) == VT_I4)
-		stringVal = (PWSTR)_bstr_t(variantData.intVal);
-	
-	if (V_VT(&variantData) == VT_BOOL)
-		stringVal = variantData.boolVal ? _T("TRUE") : _T("FALSE");
-
-	if (V_VT(&variantData) == VT_EMPTY)
-		stringVal = L"";
-	
-	if (V_VT(&variantData) == VT_I2)
-		stringVal = (PWSTR)_bstr_t(variantData.iVal);
-
-	if (V_VT(&variantData) == VT_R4)
-		stringVal = (PWSTR)_bstr_t(variantData.fltVal);
-	
-	if (V_VT(&variantData) == VT_R8)
-		stringVal = (PWSTR)_bstr_t(variantData.dblVal);
-
-
-	if (V_VT(&variantData) == VT_CY)
-		stringVal = _bstr_t(variantData.pcyVal);
-
-	if (V_VT(&variantData) == VT_DATE)
-		stringVal = _bstr_t(variantData.date);
-
-	if (V_VT(&variantData) == VT_DISPATCH)
-		stringVal = _bstr_t(variantData.pdispVal);
-	
-	if (V_VT(&variantData) == VT_ERROR)
-		stringVal = _bstr_t(variantData.intVal);
-
-	
-	return S_OK;
-}
-
-
-//-----------------------------------------------------------------------------
-//	void utils::ToUpper(__inout_opt WS strStr)
-//			Convert lowercase string to uppercase string
-//------------------------------------------------------------------------------
-void utils::ToUpper(__inout_opt WS& strStr)
-{
-	std::transform(strStr.begin(), strStr.end(), strStr.begin(), ::towupper);
-	
-}
-
-utils::~utils()
-{
 }
