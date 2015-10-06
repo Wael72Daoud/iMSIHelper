@@ -220,31 +220,7 @@ WS Err::ErrorToString(__in HRESULT hres)
 	case WBEM_E_INVALID_PROPERTY:
 		return L"WBEM_E_INVALID_PROPERTY";
 		break;
-	/*case WBEM_E_VALUE_OUT_OF_RANGE:
-		return L"";
-		break;
-	case WBEM_E_CANNOT_BE_SINGLETON:
-		return L"";
-		break;
 
-
-	case WBEM_E_INVALID_CIM_TYPE:
-		return L"";
-		break;
-
-
-	case WBEM_E_INVALID_METHOD_PARAMETERS:
-		return L"";
-		break;
-	case WBEM_E_SYSTEM_PROPERTY:
-		return L"";
-		break;
-
-
-	case WBEM_E_INVALID_PROPERTY:
-		return L"";
-		break;
-		*/
 	case WBEM_E_CALL_CANCELLED:
 		return L"WBEM_E_CALL_CANCELLED";
 		break;
