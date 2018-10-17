@@ -1,0 +1,4 @@
+LIBRARY	"msiPropExt"
+	EXPORTS 
+		MSIPropertiesExt
+		UnitTest

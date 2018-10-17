@@ -1,6 +1,6 @@
 # iMSIHelper 
 
-# Beta release candidate (build 1.6.3.15)
+# Alpha release candidate (build 1.0.106.1)
 
 
 
@@ -8,18 +8,18 @@
 various helpers for core Installation development.
 
 MSI Properties Extender:
--	Extending the Windows Installer public properties list 	(https://msdn.microsoft.com/en-us/library/aa370905%28v=vs.85%29.aspx) with 	devices and hardware attached settings.
+- Extending Microsoft Windows Installer public properties list 	(https://msdn.microsoft.com/en-us/library/aa370905%28v=vs.85%29.aspx) with 	devices and hardware attached settings.
 - Variety of Aliases per Hardware type, contains many supported properties.
-- You can choose from any number of the Hardware types (Aliases below) and you can minimize the list of properties to enhance performance or to get what you really needs.
-- The list of Aliases and properties can grow to add new hardware types.
-- Ability to retrieve the full list of the hardware on the machine (if machine contains more the display drive, monitor, cpu, etc).
-- Example and Samples (See Docs at https://github.com/Wael72Daoud/iMSIHelper/blob/master/msiPropExt/Docs/MSIPropertiesExtender.docx).
+- You can choose from any number of Hardware types (see documentation) and you can minimize the list of properties to enhance performance or to get what you really needs.
+- The list of Aliases and properties can grow to add new hardware types supported by Microsoft Windows platform.
+- Ability to retrieve the full list of hardware attached to the machine (if the machine contains more than a display card, monitor, cpu, etc).
+- For more information please see the documentation.
 
 
 
-Extender List (a subset):
+Extender List (sample):
 
-Alias Name : â€œCPU"
+Alias Name : “CPU"
 Properties : 
 	
 			"Name"
@@ -181,8 +181,4 @@ Properties :
 			"DeviceID"
 			"Service"
 
-
-
-			
-	
 
