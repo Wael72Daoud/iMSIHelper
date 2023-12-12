@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/msiPropExtProject
+/msiPropExt/.vs/msiPropExt
+/msiPropExt/Release
+/msiPropExt/x64/Debug/msiPropExt.tlog
+/msiPropExt/x64/Debug
