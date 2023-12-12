@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015  Wael Daoud (wael.daoud@hotmail.com)
+* Copyright (C) 2015 - 2023  Wael Daoud (wael.daoud@hotmail.com)
 Microsoft Public License (Ms-PL)
 
 This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
